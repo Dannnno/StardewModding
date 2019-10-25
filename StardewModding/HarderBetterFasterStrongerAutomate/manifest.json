@@ -1,0 +1,10 @@
+{
+  "Name": "HarderBetterFasterStrongerAutomate",
+  "Author": "Dan Obermiller",
+  "Version": "1.0.0",
+  "Description": "Attempt to make something similar to Pathoschild's Automate mod. No guarantees that this is actually better, faster, or stronger.",
+  "UniqueID": "Dannnno.HarderBetterFasterStrongerAutomate",
+  "EntryDll": "HarderBetterFasterStrongerAutomate.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}
