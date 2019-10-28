@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,8 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Geodes\GeodePredictor.cs" />
+    <Compile Include="Shared\GameStateContextManager.cs" />
+    <Compile Include="Shared\IStardewGame.cs" />
+    <Compile Include="Shared\IStardewObjectProvider.cs" />
+    <Compile Include="Geodes\IGeodeService.cs" />
+    <Compile Include="Geodes\StardewGeodeService.cs" />
+    <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shared\StardewDataObjectInfoProvider.cs" />
+    <Compile Include="Shared\StardewGameWrapper.cs" />
+    <Compile Include="Shared\StardewManagedPropertyAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json" />
