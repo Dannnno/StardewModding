@@ -4,8 +4,6 @@ using Dannnno.StardewMods.Predictor.UI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Menus;
-using System;
 
 namespace Dannnno.StardewMods.Predictor
 {
@@ -59,13 +57,11 @@ namespace Dannnno.StardewMods.Predictor
                     OpenMenu();
                 }
             }
-
-            GeodePredictor.PredictTreasureFromGeode(20);
         }
 
         private void OpenMenu()
         {
-            Game1.activeClickableMenu = new PredictorMenu(Wrapper);
+            Game1.activeClickableMenu = new PredictorMenu(Wrapper, GeodePredictor);
         }
     }
 }
