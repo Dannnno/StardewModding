@@ -35,6 +35,11 @@ namespace Dannnno.StardewMods.Predictor.UI
             CurrentTab = (int)PredictorTabNameEnum.Geode;
         }
 
+        /// <summary>
+        /// Get the icon id for a given tab
+        /// </summary>
+        /// <param name="tab">The tab</param>
+        /// <returns>The Icon ID</returns>
         protected override int GetIconId(PredictorTabNameEnum tab)
         {
             return tab switch
@@ -45,7 +50,10 @@ namespace Dannnno.StardewMods.Predictor.UI
             };
         }
 
-
+        /// <summary>
+        /// Create our tabs
+        /// </summary>
+        /// <param name="geodePredictor">How to predict geodes</param>
         private void InitializeSubMenus(GeodePredictor geodePredictor)
         {
             // Geode

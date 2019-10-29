@@ -59,6 +59,9 @@ namespace Dannnno.StardewMods.Predictor
             }
         }
 
+        /// <summary>
+        /// Open the prediction menu
+        /// </summary>
         private void OpenMenu()
         {
             Game1.activeClickableMenu = new PredictorMenu(Wrapper, GeodePredictor);

@@ -21,7 +21,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         public Rectangle HoverTextBounds { get; internal set; }
         public string HoverText { get; internal set; }
 
-        public IDictionary<string, IList<string>> Mappings { get; set; }
+        public IDictionary<string, string> Mappings { get; set; }
         #endregion
 
         //private int ParentSheetIndex { get; set; }
@@ -31,7 +31,7 @@ namespace Dannnno.StardewMods.Predictor.UI
 
         public MenuItemMixin() : base("")
         {
-            Mappings = new Dictionary<string, IList<string>>();
+            Mappings = new Dictionary<string, string>();
             //Item = obj;
             //ParentSheetIndex = obj.ParentSheetIndex;
             Initialize();
@@ -67,7 +67,7 @@ namespace Dannnno.StardewMods.Predictor.UI
             var linebuilder = new StringBuilder();
             foreach (var item in Mappings)
             {
-                linebuilder.AppendLine($"{item.Key}: {string.Join(", ", item.Value)}");
+                linebuilder.AppendLine($"{item.Key}: {item.Value}");
             }
 
             DrawHoverTextBox(spriteBatch, linebuilder.ToString());

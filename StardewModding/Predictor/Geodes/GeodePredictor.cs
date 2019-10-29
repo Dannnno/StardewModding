@@ -2,6 +2,7 @@
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Dannnno.StardewMods.Predictor.Geodes
@@ -10,6 +11,15 @@ namespace Dannnno.StardewMods.Predictor.Geodes
     using StardewObject = StardewValley.Object;
     using StardewList = IList<StardewValley.Object>;
     using LazyStardewList = Lazy<IList<StardewValley.Object>>;
+
+    /// <summary>
+    /// The set of directions we can predict in
+    /// </summary>
+    public enum PredictionDirectionEnum
+    {
+        Forwards,
+        Backwards
+    }
 
     /// <summary>
     /// Predicts what new geode objects will be found
@@ -31,7 +41,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
             get => geodeService;
             set
             {
-                geodeList = getNewLazyGeodeList();
+                InitializeCache();
                 geodeService = value;
             }
         }
@@ -49,7 +59,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
             get => objectProvider;
             set
             {
-                geodeList = getNewLazyGeodeList();
+                InitializeCache();
                 objectProvider = value;
             }
         }
@@ -68,6 +78,11 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// Get or set the associated monitor
         /// </summary>
         public IMonitor Monitor { get; set; }
+
+        /// <summary>
+        /// Get or set the predictions we've made
+        /// </summary>
+        private IDictionary<uint, IDictionary<StardewObject, StardewObject>> CachedPredictions { get; set; }
         #endregion
 
         /// <summary>
@@ -85,39 +100,70 @@ namespace Dannnno.StardewMods.Predictor.Geodes
             Game = game;
             Monitor = monitor;
             GeodeCalculator = calculator;
+            InitializeCache();
         }
 
+
         /// <summary>
-        /// If the service or provider changes then we need to get the value again, but we still want it to be lazy
+        /// Empty the cache and start over
         /// </summary>
-        /// <returns>Lazy-initialized list of geodes</returns>
-        private LazyStardewList getNewLazyGeodeList()
+        private void InitializeCache()
         {
-            return new LazyStardewList(() => GeodeService.RetrieveGeodes(ObjectProvider).ToList());
+            CachedPredictions = new Dictionary<uint, IDictionary<StardewObject, StardewObject>>();
+            geodeList = new LazyStardewList(() => GeodeService.RetrieveGeodes(ObjectProvider).ToList());
         }
 
         /// <summary>
         /// Predict the treasures that a geode `distance` items away will return
         /// </summary>
         /// <param name="distance">How far ahead to look</param>
-        /// <returns>For each kind of geode we can predict, the associated mapping geode</returns>
-        public IEnumerable<IDictionary<StardewObject, StardewObject>> PredictTreasureFromGeode(uint distance = 1)
+        /// <param name="direction">The direction to look</param>
+        /// <returns>For each kind of geode we can predict, the associated result</returns>
+        public IDictionary<StardewObject, StardewObject> PredictTreasureFromGeode(uint distance = 1, PredictionDirectionEnum direction = PredictionDirectionEnum.Forwards)
         {
-            // We're going to modify state, make sure we reset it correctly at the end
+            uint actualSearchIndex = direction switch
+            {
+                PredictionDirectionEnum.Backwards => distance > Game.GeodeCount ? Game.GeodeCount : Game.GeodeCount - distance,
+                PredictionDirectionEnum.Forwards => Game.GeodeCount + distance,
+                _ => Game.GeodeCount
+            };
+
+            return PredictTreasureFromGeodeAtIndex(actualSearchIndex);
+        }
+
+        /// <summary>
+        /// Predict the treasures that a geode at a given count will return
+        /// </summary>
+        /// <param name="actualGeodeCount">The geode count to check</param>
+        /// <returns>The treasures found</returns>
+        public IDictionary<StardewObject, StardewObject> PredictTreasureFromGeodeAtIndex(uint actualGeodeCount)
+        {
+            return PredictTreasureFromGeodesInRange(actualGeodeCount, actualGeodeCount).First();
+        }
+
+        /// <summary>
+        /// Predict the treasures that geodes within a range will return
+        /// </summary>
+        /// <param name="firstGeodeCount">The first to check</param>
+        /// <param name="lastGeodeCount">The last to check</param>
+        /// <returns>The treasures found</returns>
+        public IEnumerable<IDictionary<StardewObject, StardewObject>> PredictTreasureFromGeodesInRange(uint firstGeodeCount, uint lastGeodeCount)
+        {
+            Contract.Requires(firstGeodeCount <= lastGeodeCount, "The first count must not be greater than the last count");
+
             using (Game.WithTemporaryChanges(Monitor))
             {
-                // How far ahead to calculate
-                uint endingValue = Game.GeodeCount + distance;
-
-                for (uint startingValue = Game.GeodeCount; startingValue < endingValue; ++Game.GeodeCount)
+                for (; firstGeodeCount < lastGeodeCount; ++firstGeodeCount)
                 {
-                    var results = new Dictionary<StardewObject, StardewObject>();
-                    foreach (var geodeKind in GeodeList)
+                    if (!CachedPredictions.ContainsKey(firstGeodeCount))
                     {
-                        var nextTreasure = GeodeCalculator.GetTreasureFromGeode(geodeKind);
-                        results[geodeKind] = nextTreasure;
+                        // Temporarily modify the current geode count
+                        Game.GeodeCount = firstGeodeCount;
+                        CachedPredictions[firstGeodeCount] = GeodeList.ToDictionary(geodeKind => geodeKind,
+                                                                                    geodeKind => GeodeCalculator.GetTreasureFromGeode(geodeKind));
                     }
-                    yield return results;
+
+                    yield return CachedPredictions[firstGeodeCount];
                 }
             }
         }

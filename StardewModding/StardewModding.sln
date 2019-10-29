@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleMod", "ExampleMod\ExampleMod.csproj", "{4D802485-52ED-4247-BCDA-718FE3090801}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarderBetterFasterStrongerAutomate", "HarderBetterFasterStrongerAutomate\HarderBetterFasterStrongerAutomate.csproj", "{6B9FBB1B-769C-4DE9-B374-B1EDC6C95A48}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HarderBetterFasterStrongerAutomate.UnitTest", "HarderBetterFasterStrongerAutomate.UnitTest\HarderBetterFasterStrongerAutomate.UnitTest.csproj", "{830D1CE1-A8CF-4102-AE82-70739D51163E}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4D802485-52ED-4247-BCDA-718FE3090801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D802485-52ED-4247-BCDA-718FE3090801}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D802485-52ED-4247-BCDA-718FE3090801}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D802485-52ED-4247-BCDA-718FE3090801}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6B9FBB1B-769C-4DE9-B374-B1EDC6C95A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B9FBB1B-769C-4DE9-B374-B1EDC6C95A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B9FBB1B-769C-4DE9-B374-B1EDC6C95A48}.Release|Any CPU.ActiveCfg = Release|Any CPU

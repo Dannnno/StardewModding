@@ -2,13 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dannnno.StardewMods.Predictor.UI
 {
@@ -78,7 +74,6 @@ namespace Dannnno.StardewMods.Predictor.UI
             ViewableItems = new List<ClickableComponent>();
             Header = new OptionsElement(TabNameToString());
 
-            PopulateItems();
             Initialize();
         }
 
@@ -117,6 +112,8 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// <param name="spriteBatch">The sprite batch</param>
         public override void draw(SpriteBatch spriteBatch)
         {
+            PopulateItems();
+
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
             Header.draw(spriteBatch, HeaderBounds.X, HeaderBounds.Y);
