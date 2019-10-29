@@ -30,6 +30,21 @@ namespace Dannnno.StardewMods.Predictor.Shared
         public bool GameIsReady => Context.IsWorldReady;
 
         /// <summary>
+        /// Get the width of the game window
+        /// </summary>
+        public int WindowWidth => Game1.viewport.Width;
+
+        /// <summary>
+        /// Get the height of the game window
+        /// </summary>
+        public int WindowHeight => Game1.viewport.Height;
+
+        /// <summary>
+        /// Get the tile size in the game window
+        /// </summary>
+        public int TileSize => Game1.tileSize;
+
+        /// <summary>
         /// Create a context in which changes to game state are rolled back at the end of
         /// </summary>
         /// <param name="monitor">The monitor to which we should be logging messages, if that is desired</param>

@@ -55,6 +55,11 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         }
 
         /// <summary>
+        /// Get or set how to calculate geode contents
+        /// </summary>
+        public IGeodeTreasureCalculator GeodeCalculator { get; set; }
+
+        /// <summary>
         /// Get or set the associated game
         /// </summary>
         public IStardewGame Game { get; set; }
@@ -71,13 +76,15 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// <param name="service">The service to use to predict geodes</param>
         /// <param name="provider">The provider to retrieve objects from</param>
         /// <param name="game">The game this predictor is associated with</param>
+        /// <param name="calculator">The calculator that will return the geode's treasure</param>
         /// <param name="monitor">The monitor to log to</param>
-        public GeodePredictor(GeodeServiceType service, IStardewObjectProvider provider, IStardewGame game, IMonitor monitor = null)
+        public GeodePredictor(GeodeServiceType service, IStardewObjectProvider provider, IStardewGame game, IGeodeTreasureCalculator calculator, IMonitor monitor = null)
         {
             GeodeService = service;
             ObjectProvider = provider;
             Game = game;
             Monitor = monitor;
+            GeodeCalculator = calculator;
         }
 
         /// <summary>
@@ -107,7 +114,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
                     var results = new Dictionary<StardewObject, StardewObject>();
                     foreach (var geodeKind in GeodeList)
                     {
-                        var nextTreasure = StardewValley.Utility.getTreasureFromGeode(geodeKind); // Why copy the method when we can just use the game's?
+                        var nextTreasure = GeodeCalculator.GetTreasureFromGeode(geodeKind);
                         results[geodeKind] = nextTreasure;
                     }
                     yield return results;

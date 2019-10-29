@@ -52,7 +52,6 @@
     <Compile Include="Shared\IStardewObjectProvider.cs" />
     <Compile Include="Geodes\IGeodeService.cs" />
     <Compile Include="Geodes\StardewGeodeService.cs" />
-    <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\StardewDataObjectInfoProvider.cs" />

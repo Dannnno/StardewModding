@@ -2,6 +2,8 @@
 using Dannnno.StardewMods.Predictor.Shared;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
+using StardewValley.Menus;
 using System;
 
 namespace Dannnno.StardewMods.Predictor
@@ -24,6 +26,7 @@ namespace Dannnno.StardewMods.Predictor
                 new StardewGeodeService<IStardewObjectProvider>(),
                 new StardewDataObjectInfoProvider(helper),
                 wrapper,
+                new StardewGeodeCalculator(),
                 Monitor
             );
 
@@ -53,7 +56,7 @@ namespace Dannnno.StardewMods.Predictor
 
         private void OpenMenu()
         {
-            throw new NotImplementedException();
+            Game1.activeClickableMenu = new CollectionsPage(50, 50, 100, 100);
         }
     }
 }
