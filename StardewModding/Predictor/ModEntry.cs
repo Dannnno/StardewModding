@@ -1,5 +1,6 @@
 ﻿using Dannnno.StardewMods.Predictor.Geodes;
 using Dannnno.StardewMods.Predictor.Shared;
+using Dannnno.StardewMods.Predictor.UI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -13,19 +14,26 @@ namespace Dannnno.StardewMods.Predictor
     /// </summary>
     public class ModEntry : Mod
     {
-        private GeodePredictor predictor;
-        private IStardewGame wrapper;
+        /// <summary>
+        /// Get or set the geode predictor
+        /// </summary>
+        private GeodePredictor GeodePredictor { get; set; }
+
+        /// <summary>
+        /// Get or set the game metadata wrapper
+        /// </summary>
+        private IStardewGame Wrapper { get; set; }
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             // Initialize our tools
-            wrapper = new StardewGameWrapper();
-            predictor = new GeodePredictor(
+            Wrapper = new StardewGameWrapper();
+            GeodePredictor = new GeodePredictor(
                 new StardewGeodeService<IStardewObjectProvider>(),
                 new StardewDataObjectInfoProvider(helper),
-                wrapper,
+                Wrapper,
                 new StardewGeodeCalculator(),
                 Monitor
             );
@@ -39,24 +47,25 @@ namespace Dannnno.StardewMods.Predictor
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             // ignore if player hasn't loaded a save yet
-            if (!wrapper.GameIsReady)
+            if (!Wrapper.GameIsReady)
                 return;
 
             // P for Predictor
+            // TODO: Make this configurable
             if (e.Button == SButton.P)
             {
-                if (wrapper.CanOpenMenu)
+                if (Wrapper.CanOpenMenu)
                 {
                     OpenMenu();
                 }
             }
 
-            predictor.PredictTreasureFromGeode(20);
+            GeodePredictor.PredictTreasureFromGeode(20);
         }
 
         private void OpenMenu()
         {
-            Game1.activeClickableMenu = new CollectionsPage(50, 50, 100, 100);
+            Game1.activeClickableMenu = new PredictorMenu(Wrapper);
         }
     }
 }
