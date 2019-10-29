@@ -47,6 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Geodes\GeodePredictor.cs" />
+    <Compile Include="Geodes\IGeodeTreasureCalculator.cs" />
+    <Compile Include="Geodes\StardewGeodeCalculator.cs" />
+    <Compile Include="UI\GeodeMenuTab.cs" />
+    <Compile Include="UI\PredictorMenuTab.cs" />
+    <Compile Include="UI\PredictorMenu.cs" />
     <Compile Include="Shared\GameStateContextManager.cs" />
     <Compile Include="Shared\IStardewGame.cs" />
     <Compile Include="Shared\IStardewObjectProvider.cs" />
