@@ -12,9 +12,9 @@ namespace Dannnno.StardewMods.Predictor.UI
     public class MenuItemMixin: OptionsElement
     {
         #region Constants
-        private const int SpriteSize = 64;
-        private const int MenuWidth = 880;
-        private const int FakeTilePositionTemporary = 123;
+        protected const int SpriteSize = 64;
+        protected const int MenuWidth = 880;
+        protected const int FakeTilePositionTemporary = 123;
         #endregion
 
         #region Properties
@@ -46,8 +46,10 @@ namespace Dannnno.StardewMods.Predictor.UI
             HoverTextBounds = new Rectangle();
         }
         
-        public void draw(SpriteBatch spriteBatch, int slotX, int slotY, int xPositionOnScreen)
+        public virtual void draw(SpriteBatch spriteBatch, int slotX, int slotY, int xPositionOnScreen)
         {
+            throw new NotImplementedException();
+
             int SpriteX = slotX + bounds.X;
             int SpriteY = slotY + bounds.Y;
 

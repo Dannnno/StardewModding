@@ -9,6 +9,11 @@ namespace Dannnno.StardewMods.Predictor.UI
 {
     public class ClickableMenuMixin : IClickableMenu
     {
+        #region Contants
+        protected const int SpriteSize = 64;
+        #endregion
+
+        #region Properties
         /// <summary>
         /// Get the game associated with the menu
         /// </summary>
@@ -28,6 +33,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// Get whether the menu should be prevented from closing
         /// </summary>
         public bool ForcePreventClose => false;
+        #endregion
 
         /// <summary>
         /// Initialize the menu

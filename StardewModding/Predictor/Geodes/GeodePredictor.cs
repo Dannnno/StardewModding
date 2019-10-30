@@ -119,7 +119,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// <param name="distance">How far ahead to look</param>
         /// <param name="direction">The direction to look</param>
         /// <returns>For each kind of geode we can predict, the associated result</returns>
-        public IDictionary<StardewObject, StardewObject> PredictTreasureFromGeode(uint distance = 1, PredictionDirectionEnum direction = PredictionDirectionEnum.Forwards)
+        public IDictionary<StardewObject, StardewObject> PredictTreasureFromGeodeAtDistance(uint distance = 1, PredictionDirectionEnum direction = PredictionDirectionEnum.Forwards)
         {
             uint actualSearchIndex = direction switch
             {
@@ -132,11 +132,25 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         }
 
         /// <summary>
+        /// Predict the treasures that will come from geodes in a span ahead and behind of our current count
+        /// </summary>
+        /// <param name="distanceAhead">How far ahead to peek</param>
+        /// <param name="distanceBehind">How far behind to look</param>
+        /// <returns>The treasures found</returns>
+        public IEnumerable<IDictionary<StardewObject, StardewObject>> PredictTreasureFromGeodeByRangeDistance(uint distanceAhead, uint distanceBehind)
+        {
+            uint startIndex = Game.GeodeCount < distanceBehind ? Game.GeodeCount : Game.GeodeCount - distanceBehind;
+            uint endIndex = Game.GeodeCount + distanceAhead;
+
+            return PredictTreasureFromGeodesInRange(startIndex, endIndex);
+        }
+
+        /// <summary>
         /// Predict the treasures that a geode at a given count will return
         /// </summary>
         /// <param name="actualGeodeCount">The geode count to check</param>
         /// <returns>The treasures found</returns>
-        public IDictionary<StardewObject, StardewObject> PredictTreasureFromGeodeAtIndex(uint actualGeodeCount)
+        private IDictionary<StardewObject, StardewObject> PredictTreasureFromGeodeAtIndex(uint actualGeodeCount)
         {
             return PredictTreasureFromGeodesInRange(actualGeodeCount, actualGeodeCount).First();
         }
@@ -147,9 +161,11 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// <param name="firstGeodeCount">The first to check</param>
         /// <param name="lastGeodeCount">The last to check</param>
         /// <returns>The treasures found</returns>
-        public IEnumerable<IDictionary<StardewObject, StardewObject>> PredictTreasureFromGeodesInRange(uint firstGeodeCount, uint lastGeodeCount)
+        private IEnumerable<IDictionary<StardewObject, StardewObject>> PredictTreasureFromGeodesInRange(uint firstGeodeCount, uint lastGeodeCount)
         {
             Contract.Requires(firstGeodeCount <= lastGeodeCount, "The first count must not be greater than the last count");
+
+            var results = new List<IDictionary<StardewObject, StardewObject>>();
 
             using (Game.WithTemporaryChanges(Monitor))
             {
@@ -163,9 +179,12 @@ namespace Dannnno.StardewMods.Predictor.Geodes
                                                                                     geodeKind => GeodeCalculator.GetTreasureFromGeode(geodeKind));
                     }
 
-                    yield return CachedPredictions[firstGeodeCount];
+                    results.Add(CachedPredictions[firstGeodeCount]);
                 }
             }
+
+            // Don't use yield return because we don't want to hold the context manager for too long
+            return results;
         }
     }
 }

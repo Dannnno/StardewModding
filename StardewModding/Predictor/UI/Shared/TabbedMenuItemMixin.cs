@@ -113,10 +113,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         public override void draw(SpriteBatch spriteBatch)
         {
             PopulateItems();
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
-            Header.draw(spriteBatch, HeaderBounds.X, HeaderBounds.Y);
+            drawHeader(spriteBatch);
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
@@ -134,6 +131,13 @@ namespace Dannnno.StardewMods.Predictor.UI
                     ScrollBar.draw(spriteBatch);
                 }
             }
+        }
+
+        protected virtual void drawHeader(SpriteBatch spriteBatch)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
+            Header.draw(spriteBatch, HeaderBounds.X, HeaderBounds.Y);
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
