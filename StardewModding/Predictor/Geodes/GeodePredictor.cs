@@ -59,8 +59,11 @@ namespace Dannnno.StardewMods.Predictor.Geodes
             get => objectProvider;
             set
             {
-                InitializeCache();
-                objectProvider = value;
+                if (!objectProvider.Equals(value))
+                {
+                    InitializeCache();
+                    objectProvider = value;
+                }
             }
         }
 

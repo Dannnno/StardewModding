@@ -1,6 +1,7 @@
 ﻿using Dannnno.StardewMods.Predictor.Geodes;
 using Dannnno.StardewMods.Predictor.Shared;
 using Dannnno.StardewMods.Predictor.UI;
+using Dannnno.StardewMods.Predictor.UI.Shared;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -64,7 +65,8 @@ namespace Dannnno.StardewMods.Predictor
         /// </summary>
         private void OpenMenu()
         {
-            Game1.activeClickableMenu = new PredictorMenu(Wrapper, GeodePredictor);
+            Game1.activeClickableMenu = new PredictorMenuV2();
+                //new PredictorMenu(Wrapper, GeodePredictor);
         }
     }
 }

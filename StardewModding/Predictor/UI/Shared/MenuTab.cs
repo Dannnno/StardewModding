@@ -113,27 +113,27 @@ namespace Dannnno.StardewMods.Predictor.UI
         public override void draw(SpriteBatch spriteBatch)
         {
             PopulateItems();
-            drawHeader(spriteBatch);
+            DrawHeader(spriteBatch);
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);
-            for (int i = 0; i < NumViewablePerPage && CurrentItemIndex + i < Items.Count; ++i)
-            {
-                Items[CurrentItemIndex + i].draw(spriteBatch, ViewableItems[i].bounds.X, ViewableItems[i].bounds.Y, xPositionOnScreen);
-            }
+            //for (int i = 0; i < NumViewablePerPage && CurrentItemIndex + i < Items.Count; ++i)
+            //{
+            //    Items[CurrentItemIndex + i].draw(spriteBatch, ViewableItems[i].bounds.X, ViewableItems[i].bounds.Y, xPositionOnScreen);
+            //}
             if (!GameMenu.forcePreventClose)
             {
-                UpArrow.draw(spriteBatch);
-                DownArrow.draw(spriteBatch);
                 if (Items.Count > NumViewablePerPage)
                 {
+                    UpArrow.draw(spriteBatch);
+                    DownArrow.draw(spriteBatch);
                     drawTextureBox(spriteBatch, Game1.mouseCursors, new Rectangle(403, 383, 6, 6), ScrollBarRunner.X, ScrollBarRunner.Y, ScrollBarRunner.Width, ScrollBarRunner.Height, Color.White, Game1.pixelZoom, false);
                     ScrollBar.draw(spriteBatch);
                 }
             }
         }
 
-        protected virtual void drawHeader(SpriteBatch spriteBatch)
+        protected virtual void DrawHeader(SpriteBatch spriteBatch)
         {
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null);

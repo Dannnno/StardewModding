@@ -53,9 +53,11 @@
     <Compile Include="Geodes\IGeodeTreasureCalculator.cs" />
     <Compile Include="Geodes\StardewGeodeCalculator.cs" />
     <Compile Include="UI\Geode\GeodeResultModel.cs" />
+    <Compile Include="UI\PredictorMenuV2.cs" />
     <Compile Include="UI\Shared\ClickableMenu.cs" />
     <Compile Include="UI\Geode\GeodeMenuItem.cs" />
     <Compile Include="UI\Geode\GeodeMenuTab.cs" />
+    <Compile Include="UI\Shared\HoverTextBox.cs" />
     <Compile Include="UI\Shared\MenuTabItem.cs" />
     <Compile Include="UI\PredictorMenu.cs" />
     <Compile Include="Shared\GameStateContextManager.cs" />
@@ -69,6 +71,7 @@
     <Compile Include="Shared\StardewGameWrapper.cs" />
     <Compile Include="Shared\StardewManagedPropertyAttribute.cs" />
     <Compile Include="UI\Shared\MenuTab.cs" />
+    <Compile Include="UI\Shared\MenuVerticalScrollBar.cs" />
     <Compile Include="UI\Shared\TabbedClickableMenu.cs" />
   </ItemGroup>
   <ItemGroup>
