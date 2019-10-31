@@ -6,7 +6,7 @@ using StardewValley.BellsAndWhistles;
 
 namespace Dannnno.StardewMods.Predictor.UI
 {
-    internal class GeodeMenuItem: MenuItemMixin
+    internal class GeodeMenuItem: MenuTabItem
     {
         internal IList<GeodeResultModel> Data { get; set; }
 

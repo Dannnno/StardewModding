@@ -22,7 +22,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// <summary>
         /// Get or set the menu data
         /// </summary>
-        internal ClickableMenuMixin Menu { get; set; }
+        internal ClickableMenu Menu { get; set; }
 
         /// <summary>
         /// Get or set the icon id
@@ -30,7 +30,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         public int IconId { get; set; }
     }
 
-    public class TabbedMenuMixin<TEnum> : ClickableMenuMixin where TEnum : Enum
+    public class TabbedMenuMixin<TEnum> : ClickableMenu where TEnum : Enum
     {
         #region Fields
         private Lazy<int> LazyEnumMemberCount => new Lazy<int>(() => Enum.GetValues(typeof(TEnum)).Length);
@@ -65,7 +65,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// <summary>
         /// Get the currently selected tab's menu
         /// </summary>
-        public ClickableMenuMixin CurrentMenu => Tabs[CurrentTab].Menu;
+        public ClickableMenu CurrentMenu => Tabs[CurrentTab].Menu;
 
         /// <summary>
         /// Get the currently selected tab's button

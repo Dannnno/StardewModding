@@ -46,7 +46,7 @@ namespace Dannnno.StardewMods.Predictor.UI
     /// <remarks>
     /// Heavily borrowed from/adapted from https://github.com/LukeSeewald/PublicStardewValleyMods
     /// </remarks>
-    internal class GeodeMenuTab : TabbedMenuItemMixin<GeodeMenuItem>
+    internal class GeodeMenuTab : MenuTab<GeodeMenuItem>
     {
         #region Constants
         private const int DefaultSearchDistance = 1;

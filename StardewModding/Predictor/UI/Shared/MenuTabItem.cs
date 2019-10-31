@@ -9,7 +9,7 @@ using StardewValley.Menus;
 
 namespace Dannnno.StardewMods.Predictor.UI
 {
-    public class MenuItemMixin: OptionsElement
+    public class MenuTabItem: OptionsElement
     {
         #region Constants
         protected const int SpriteSize = 64;
@@ -29,7 +29,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         private string Name { get; set; }
 
 
-        public MenuItemMixin() : base("")
+        public MenuTabItem() : base("")
         {
             Mappings = new Dictionary<string, string>();
             //Item = obj;

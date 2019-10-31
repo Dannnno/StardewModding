@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Dannnno.StardewMods.Predictor.UI
 {
-    public class TabbedMenuItemMixin<TItem> : ClickableMenuMixin where TItem: MenuItemMixin
+    public class MenuTab<TItem> : ClickableMenu where TItem: MenuTabItem
     {
         #region Constants
         protected const int NumViewablePerPage = 6;
@@ -66,7 +66,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// Create a new tabbed menu item
         /// </summary>
         /// <param name="game"></param>
-        public TabbedMenuItemMixin(string tabName, IStardewGame game) : base(game)
+        public MenuTab(string tabName, IStardewGame game) : base(game)
         {
             TabName = tabName;
             CurrentItemIndex = 0;

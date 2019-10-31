@@ -7,7 +7,7 @@ using System;
 
 namespace Dannnno.StardewMods.Predictor.UI
 {
-    public class ClickableMenuMixin : IClickableMenu
+    public class ClickableMenu : IClickableMenu
     {
         #region Contants
         protected const int SpriteSize = 64;
@@ -39,7 +39,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// Initialize the menu
         /// </summary>
         /// <param name="game">The game the menu is for</param>
-        public ClickableMenuMixin(IStardewGame game) : base(CalculateMenuXPosition(game),
+        public ClickableMenu(IStardewGame game) : base(CalculateMenuXPosition(game),
                                                             CalculateMenuYPosition(game),
                                                             CalculateMenuWidth(),
                                                             CalculateMenuHeight(),
