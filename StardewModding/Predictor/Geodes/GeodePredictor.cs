@@ -7,11 +7,6 @@ using System.Linq;
 
 namespace Dannnno.StardewMods.Predictor.Geodes
 {
-    using GeodeServiceType = IGeodeService<IStardewObjectProvider>;
-    using StardewObject = StardewValley.Object;
-    using StardewList = IList<StardewValley.Object>;
-    using LazyStardewList = Lazy<IList<StardewValley.Object>>;
-
     /// <summary>
     /// The set of directions we can predict in
     /// </summary>
@@ -27,29 +22,29 @@ namespace Dannnno.StardewMods.Predictor.Geodes
     public class GeodePredictor
     {
         #region fields
-        private GeodeServiceType geodeService;
+        private IGeodeService<IStardewObjectProvider> geodeService;
         private IStardewObjectProvider objectProvider;
-        private LazyStardewList geodeList;
+        private Lazy<IList<StardewValley.Object>> geodeList;
         #endregion
 
         #region properties
         /// <summary>
         /// Get or set the service used to retrieve the geodes
         /// </summary>
-        public GeodeServiceType GeodeService
+        public IGeodeService<IStardewObjectProvider> GeodeService
         {
             get => geodeService;
             set
             {
-                InitializeCache();
                 geodeService = value;
+                InitializeCache();
             }
         }
 
         /// <summary>
         /// Get the list of geodes that this predictor can work on
         /// </summary>
-        public StardewList GeodeList { get => geodeList.Value; }
+        public IList<StardewValley.Object> GeodeList { get => geodeList.Value; }
 
         /// <summary>
         /// Get or set the provider of geode objects
@@ -59,11 +54,8 @@ namespace Dannnno.StardewMods.Predictor.Geodes
             get => objectProvider;
             set
             {
-                if (!objectProvider.Equals(value))
-                {
-                    InitializeCache();
-                    objectProvider = value;
-                }
+                objectProvider = value;
+                InitializeCache();
             }
         }
 
@@ -85,7 +77,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// <summary>
         /// Get or set the predictions we've made
         /// </summary>
-        private IDictionary<uint, IDictionary<StardewObject, StardewObject>> CachedPredictions { get; set; }
+        private IDictionary<uint, IDictionary<StardewValley.Object, StardewValley.Object>> CachedPredictions { get; set; }
         #endregion
 
         /// <summary>
@@ -96,7 +88,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// <param name="game">The game this predictor is associated with</param>
         /// <param name="calculator">The calculator that will return the geode's treasure</param>
         /// <param name="monitor">The monitor to log to</param>
-        public GeodePredictor(GeodeServiceType service, IStardewObjectProvider provider, IStardewGame game, IGeodeTreasureCalculator calculator, IMonitor monitor = null)
+        public GeodePredictor(IGeodeService<IStardewObjectProvider> service, IStardewObjectProvider provider, IStardewGame game, IGeodeTreasureCalculator calculator, IMonitor monitor = null)
         {
             GeodeService = service;
             ObjectProvider = provider;
@@ -112,8 +104,8 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// </summary>
         private void InitializeCache()
         {
-            CachedPredictions = new Dictionary<uint, IDictionary<StardewObject, StardewObject>>();
-            geodeList = new LazyStardewList(() => GeodeService.RetrieveGeodes(ObjectProvider).ToList());
+            CachedPredictions = new Dictionary<uint, IDictionary<StardewValley.Object, StardewValley.Object>>();
+            geodeList = new Lazy<IList<StardewValley.Object>>(() => GeodeService.RetrieveGeodes(ObjectProvider).ToList());
         }
 
         /// <summary>
@@ -122,7 +114,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// <param name="distance">How far ahead to look</param>
         /// <param name="direction">The direction to look</param>
         /// <returns>For each kind of geode we can predict, the associated result</returns>
-        public IDictionary<StardewObject, StardewObject> PredictTreasureFromGeodeAtDistance(uint distance = 1, PredictionDirectionEnum direction = PredictionDirectionEnum.Forwards)
+        public IDictionary<StardewValley.Object, StardewValley.Object> PredictTreasureFromGeodeAtDistance(uint distance = 1, PredictionDirectionEnum direction = PredictionDirectionEnum.Forwards)
         {
             uint actualSearchIndex = direction switch
             {
@@ -140,7 +132,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// <param name="distanceAhead">How far ahead to peek</param>
         /// <param name="distanceBehind">How far behind to look</param>
         /// <returns>The treasures found</returns>
-        public IEnumerable<IDictionary<StardewObject, StardewObject>> PredictTreasureFromGeodeByRangeDistance(uint distanceAhead, uint distanceBehind)
+        public IEnumerable<IDictionary<StardewValley.Object, StardewValley.Object>> PredictTreasureFromGeodeByRangeDistance(uint distanceAhead, uint distanceBehind)
         {
             uint startIndex = Game.GeodeCount < distanceBehind ? Game.GeodeCount : Game.GeodeCount - distanceBehind;
             uint endIndex = Game.GeodeCount + distanceAhead;
@@ -153,7 +145,7 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// </summary>
         /// <param name="actualGeodeCount">The geode count to check</param>
         /// <returns>The treasures found</returns>
-        private IDictionary<StardewObject, StardewObject> PredictTreasureFromGeodeAtIndex(uint actualGeodeCount)
+        private IDictionary<StardewValley.Object, StardewValley.Object> PredictTreasureFromGeodeAtIndex(uint actualGeodeCount)
         {
             return PredictTreasureFromGeodesInRange(actualGeodeCount, actualGeodeCount).First();
         }
@@ -164,11 +156,11 @@ namespace Dannnno.StardewMods.Predictor.Geodes
         /// <param name="firstGeodeCount">The first to check</param>
         /// <param name="lastGeodeCount">The last to check</param>
         /// <returns>The treasures found</returns>
-        private IEnumerable<IDictionary<StardewObject, StardewObject>> PredictTreasureFromGeodesInRange(uint firstGeodeCount, uint lastGeodeCount)
+        private IEnumerable<IDictionary<StardewValley.Object, StardewValley.Object>> PredictTreasureFromGeodesInRange(uint firstGeodeCount, uint lastGeodeCount)
         {
             Contract.Requires(firstGeodeCount <= lastGeodeCount, "The first count must not be greater than the last count");
 
-            var results = new List<IDictionary<StardewObject, StardewObject>>();
+            var results = new List<IDictionary<StardewValley.Object, StardewValley.Object>>();
 
             using (Game.WithTemporaryChanges(Monitor))
             {

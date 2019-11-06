@@ -79,7 +79,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         {
             DrawBackground(b);
             DrawClickableTabs(b);
-            RedrawMouseCursor(b);
+            DrawMouseAndHoverBox(b);
         }
 
         /// <summary>
@@ -120,9 +120,9 @@ namespace Dannnno.StardewMods.Predictor.UI
         {
             for (int i = 0; i < Tabs.Count; ++i)
             {
-                b.Begin(SpriteSortMode.FrontToBack, // sort by depth from front to back b/c we're drawing opaque sprites
-                        BlendState.NonPremultiplied, // Alpha blending only, for opqaue sprites
-                        SamplerState.PointClamp, // We don't want linear
+                b.Begin(SpriteSortMode.FrontToBack, 
+                        BlendState.NonPremultiplied, 
+                        SamplerState.PointClamp, 
                         null,
                         null);
 
@@ -155,17 +155,35 @@ namespace Dannnno.StardewMods.Predictor.UI
             }
         }
 
+        /// <summary>
+        /// Get the icon id for the tab
+        /// </summary>
+        /// <param name="i">The tab</param>
+        /// <returns>The Icon Id</returns>
         private int GetTabIconId(int i)
         {
+            // Dumb thing that doesn't give me intellisense warnings and always returns the same thing
             return i == i + 1 ? RottingPlantId : RottingPlantId;
         }
 
+        /// <summary>
+        /// Get the bounding box of the tab's background
+        /// </summary>
+        /// <param name="tabId">The tab we're looking for</param>
+        /// <param name="component">That tab's component</param>
+        /// <returns>The bounding box</returns>
         private Vector2 GetBackgroundBoundsFromComponent(int tabId, ClickableComponent component)
         {
             var selectedTabVerticalOffset = GetTabVerticalOffset(tabId);
             return new Vector2(component.bounds.X, component.bounds.Y + selectedTabVerticalOffset);
         }
 
+        /// <summary>
+        /// Get the bounding box of the tab's sprite icon
+        /// </summary>
+        /// <param name="tabId">The tab we're looking for</param>
+        /// <param name="component">That tab's component</param>
+        /// <returns>The bounding box</returns>
         private Vector2 GetSpriteBoundsFromComponent(int tabId, ClickableComponent component)
         {
             var componentBounds = GetBackgroundBoundsFromComponent(tabId, component);
@@ -185,25 +203,30 @@ namespace Dannnno.StardewMods.Predictor.UI
         }
 
         /// <summary>
-        /// Redraw the mouse cursor, as apparently that gets lost at some point
+        /// We need to make our mouse show up in the right place, and if we have one we should draw the hover box
         /// </summary>
         /// <param name="b">Batch to use</param>
-        private void RedrawMouseCursor(SpriteBatch b)
+        private void DrawMouseAndHoverBox(SpriteBatch b)
         {
-            b.Begin(SpriteSortMode.Deferred, // Defer drawing until batch finishes, in order of commands. Order is fine, b/c this is just cursor
-                    BlendState.AlphaBlend, // Only blend alpha layer
-                    SamplerState.PointClamp, // We don't want linear
+            b.Begin(SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
                     null,
                     null);
 
+            // Don't forget about inheritance; as good a time as any
             base.draw(b);
+
+            // Now draw the hover text, because that should be in the same place as the mouse
             HoverTextBox.draw(b);
 
+            // If we are using a hardware cursor, then we don't need to redraw it
             if (Game1.options.hardwareCursor)
             {
                 return;
             }
 
+            // Redraw the mouse, because it disappears
             b.Draw(Game1.mouseCursors,
                    new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY()),
                    new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.gamepadControls ? 44 : 0, 16, 16)),
