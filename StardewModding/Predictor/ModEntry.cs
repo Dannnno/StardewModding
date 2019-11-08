@@ -1,7 +1,6 @@
-﻿using Dannnno.StardewMods.Predictor.Geodes;
-using Dannnno.StardewMods.Predictor.Shared;
+﻿using Dannnno.StardewMods.Abstraction;
+using Dannnno.StardewMods.Predictor.Geodes;
 using Dannnno.StardewMods.Predictor.UI;
-using Dannnno.StardewMods.Predictor.UI.Shared;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;

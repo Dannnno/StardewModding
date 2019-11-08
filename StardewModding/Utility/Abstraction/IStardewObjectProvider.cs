@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dannnno.StardewMods.Predictor.Shared
+namespace Dannnno.StardewMods.Abstraction
 {
     /// <summary>
     /// Standard interface by which to get stardew valley objects

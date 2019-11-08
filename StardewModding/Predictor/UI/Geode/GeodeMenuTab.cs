@@ -1,9 +1,9 @@
-﻿using Dannnno.StardewMods.Predictor.Geodes;
-using Dannnno.StardewMods.Predictor.Shared;
+﻿using Dannnno.StardewMods.Abstraction;
+using Dannnno.StardewMods.Predictor.Geodes;
+using Dannnno.StardewMods.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;

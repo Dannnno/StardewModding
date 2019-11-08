@@ -1,11 +1,11 @@
-﻿using Dannnno.StardewMods.Predictor.Shared;
+﻿using Dannnno.StardewMods.Abstraction;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 using System;
 
-namespace Dannnno.StardewMods.Predictor.UI.Shared
+namespace Dannnno.StardewMods.UI.Shared
 {
     public class MenuVerticalScrollBar : IClickableMenu
     {

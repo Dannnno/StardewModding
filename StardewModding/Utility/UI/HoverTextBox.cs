@@ -4,7 +4,7 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 
-namespace Dannnno.StardewMods.Predictor.UI.Shared
+namespace Dannnno.StardewMods.UI.Shared
 {
     /// <summary>
     /// Class that represents some hover text

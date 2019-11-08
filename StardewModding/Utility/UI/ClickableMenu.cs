@@ -1,94 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Dannnno.StardewMods.Abstraction;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
+using System;
 
-namespace Dannnno.StardewMods.Predictor.UI
+namespace Dannnno.StardewMods.UI
 {
-    public class MenuTabItem: OptionsElement
+    public class ClickableMenu : IClickableMenu
     {
-        #region Constants
+        #region Contants
         protected const int SpriteSize = 64;
-        protected const int MenuWidth = 880;
-        protected const int FakeTilePositionTemporary = 123;
         #endregion
 
         #region Properties
-        public Rectangle HoverTextBounds { get; internal set; }
-        public string HoverText { get; internal set; }
+        /// <summary>
+        /// Get the game associated with the menu
+        /// </summary>
+        public IStardewGame Game { get; protected set; }
 
-        public IDictionary<string, string> Mappings { get; set; }
+        /// <summary>
+        /// Get or set the current hover text of the menu
+        /// </summary>
+        public string HoverText { get; set; }
+
+        /// <summary>
+        /// Get whether the menu is currently invisible
+        /// </summary>
+        public bool Invisible => false;
+
+        /// <summary>
+        /// Get whether the menu should be prevented from closing
+        /// </summary>
+        public bool ForcePreventClose => false;
         #endregion
 
-        //private int ParentSheetIndex { get; set; }
-        //private SObject Item { get; set; }
-        private string Name { get; set; }
-
-
-        public MenuTabItem() : base("")
+        /// <summary>
+        /// Initialize the menu
+        /// </summary>
+        /// <param name="game">The game the menu is for</param>
+        public ClickableMenu(IStardewGame game) : base(CalculateMenuXPosition(game),
+                                                            CalculateMenuYPosition(game),
+                                                            CalculateMenuWidth(),
+                                                            CalculateMenuHeight(),
+                                                            ShowCloseButton())
         {
-            Mappings = new Dictionary<string, string>();
-            //Item = obj;
-            //ParentSheetIndex = obj.ParentSheetIndex;
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            //Name = Item.DisplayName;
-            bounds = new Rectangle(8 * Game1.pixelZoom, 4 * Game1.pixelZoom, 9 * Game1.pixelZoom, 9 * Game1.pixelZoom);
-            //ItemDisplayInfo howToObtain = new ItemDisplayInfo(Item);
-            //HoverText = howToObtain.GetItemDisplayInfo();
-            HoverTextBounds = new Rectangle();
+            Game = game;
+            HoverText = "";
         }
         
-        public virtual void draw(SpriteBatch spriteBatch, int slotX, int slotY, int xPositionOnScreen)
-        {
-            throw new NotImplementedException();
-
-            int SpriteX = slotX + bounds.X;
-            int SpriteY = slotY + bounds.Y;
-
-            int NameX = slotX + bounds.X + (int)(Game1.tileSize * 1.5);
-            int TextY = slotY + bounds.Y + Game1.pixelZoom * 3;
-
-            spriteBatch.Draw(Game1.objectSpriteSheet, 
-                             new Rectangle(SpriteX, SpriteY, SpriteSize, SpriteSize), 
-                             new Microsoft.Xna.Framework.Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, FakeTilePositionTemporary, 16, 16)), 
-                             Color.White);
-
-            //if (Item.Stack > 1)
-            //{
-            //    Utility.drawTinyDigits(Item.Stack, spriteBatch, new Vector2(SpriteX + SpriteSize - 12, SpriteY + SpriteSize - 12), 2f, 0.9f, Color.White);
-            //}
-
-            var linebuilder = new StringBuilder();
-            foreach (var item in Mappings)
-            {
-                linebuilder.AppendLine($"{item.Key}: {item.Value}");
-            }
-
-            DrawHoverTextBox(spriteBatch, linebuilder.ToString());
-
-            //SpriteText.drawString(spriteBatch, Name, NameX, TextY, 999, -1, 999, 1f, 0.1f, false, -1, "", -1);
-
-            //if (HoverText != "")
-            //{
-            //    int InfoX = xPositionOnScreen + MenuWidth - 56 - SpriteText.getWidthOfString(StardewModdingAPI.Utilities.GetTranslation("TEXT_TO_HOVER_OVER_FOR_INFO"));
-
-            //    HoverTextBounds.X = InfoX;
-            //    HoverTextBounds.Y = TextY;
-            //    HoverTextBounds.Width = SpriteText.getWidthOfString(Utilities.GetTranslation("TEXT_TO_HOVER_OVER_FOR_INFO"));
-            //    HoverTextBounds.Height = SpriteText.getHeightOfString(Utilities.GetTranslation("TEXT_TO_HOVER_OVER_FOR_INFO"));
-
-            //    SpriteText.drawString(spriteBatch, Utilities.GetTranslation("TEXT_TO_HOVER_OVER_FOR_INFO"), InfoX, TextY);
-            //}
-        }
-
         /// <summary>
         /// Determine whether a value would go off the right side of the menu
         /// </summary>
@@ -135,6 +95,7 @@ namespace Dannnno.StardewMods.Predictor.UI
 
             return overDown > overUp ? Game1.getOldMouseY() - height : y;
         }
+
         /// <summary>
         /// Draws a text box for hover text
         /// </summary>
@@ -177,6 +138,8 @@ namespace Dannnno.StardewMods.Predictor.UI
                 }
             }
 
+            drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), (int)position.X, (int)position.Y, (int)boxDimensions.X, (int)boxDimensions.Y, Color.White);
+
             position.X += 16;
             position.Y += 16 + 4;
             for (int i = 0; i < lines.Length; ++i)
@@ -186,5 +149,51 @@ namespace Dannnno.StardewMods.Predictor.UI
             }
         }
 
+        /// <summary>
+        /// Get whether to show the close button
+        /// </summary>
+        /// <returns>True</returns>
+        protected static bool ShowCloseButton()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Calculate the width of the menu
+        /// </summary>
+        /// <returns>The width of the menu</returns>
+        protected static int CalculateMenuWidth()
+        {
+            return 800 + borderWidth * 2;
+        }
+
+        /// <summary>
+        /// Calculate the height of the menu
+        /// </summary>
+        /// <returns>The height of the menu</returns>
+        protected static int CalculateMenuHeight()
+        {
+            return 600 + borderWidth * 2;
+        }
+
+        /// <summary>
+        /// Calculate the upper left hand corner x position of the menu
+        /// </summary>
+        /// <param name="game">The game whose menu position we're calculating</param>
+        /// <returns>The x position</returns>
+        protected static int CalculateMenuXPosition(IStardewGame game)
+        {
+            return game.WindowWidth / 2 - CalculateMenuWidth() / 2;
+        }
+
+        /// <summary>
+        /// Calculate the upper left hand corner y position of the menu
+        /// </summary>
+        /// <param name="game">The game whose menu position we're calculating</param>
+        /// <returns>The y position</returns>
+        protected static int CalculateMenuYPosition(IStardewGame game)
+        {
+            return game.WindowHeight / 2 - CalculateMenuHeight() / 2;
+        }
     }
 }

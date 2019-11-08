@@ -1,4 +1,4 @@
-﻿using Dannnno.StardewMods.Predictor.Shared;
+﻿using Dannnno.StardewMods.Abstraction;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace Dannnno.StardewMods.Predictor.UI
+namespace Dannnno.StardewMods.UI
 {
     /// <summary>
     /// Constituent pieces of a menu item
@@ -17,12 +17,12 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// <summary>
         /// Get or set the clickable component itself
         /// </summary>
-        internal ClickableComponent Component { get; set; }
+        public ClickableComponent Component { get; set; }
 
         /// <summary>
         /// Get or set the menu data
         /// </summary>
-        internal ClickableMenu Menu { get; set; }
+        public ClickableMenu Menu { get; set; }
 
         /// <summary>
         /// Get or set the icon id

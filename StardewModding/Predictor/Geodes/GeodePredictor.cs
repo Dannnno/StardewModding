@@ -1,4 +1,4 @@
-﻿using Dannnno.StardewMods.Predictor.Shared;
+﻿using Dannnno.StardewMods.Abstraction;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;

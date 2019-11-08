@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dannnno.StardewMods.Predictor.UI
+﻿namespace Dannnno.StardewMods.Predictor.UI
 {
     internal struct GeodeResultModel
     {

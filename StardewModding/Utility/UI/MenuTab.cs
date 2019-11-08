@@ -1,4 +1,4 @@
-﻿using Dannnno.StardewMods.Predictor.Shared;
+﻿using Dannnno.StardewMods.Abstraction;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -6,7 +6,7 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 
-namespace Dannnno.StardewMods.Predictor.UI
+namespace Dannnno.StardewMods.UI
 {
     public class MenuTab<TItem> : ClickableMenu where TItem: MenuTabItem
     {

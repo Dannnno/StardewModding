@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System;
 
-namespace Dannnno.StardewMods.Predictor.Shared
+namespace Dannnno.StardewMods.Abstraction
 {
     public interface IStardewGame
     {

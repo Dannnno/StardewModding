@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Dannnno.StardewMods.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using System.Collections.Generic;
 
 namespace Dannnno.StardewMods.Predictor.UI
 {

@@ -4,7 +4,7 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 
-namespace Dannnno.StardewMods.Predictor.Shared
+namespace Dannnno.StardewMods.Abstraction
 {
     /// <summary>
     /// Encapsulates StardewValley's Game1

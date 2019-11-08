@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using Dannnno.StardewMods.Predictor.UI.Shared;
+﻿using Dannnno.StardewMods.UI.Shared;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace Dannnno.StardewMods.Predictor.UI
 {
@@ -26,8 +24,10 @@ namespace Dannnno.StardewMods.Predictor.UI
         private const float TabSpriteDepth = 0.9f;
         private const int BaseComponentId = 26438;
         private const int RottingPlantId = 747;
+        #endregion
 
-        // We don't need to recalculate this every time
+        #region Readonly Properties
+        // We don't need to recalculate these every time
         private static Lazy<Rectangle> LazyTabCursorRectangle => new Lazy<Rectangle>(() => new Rectangle(16, 368, 16, 16));
         private static Lazy<Vector2> LazyTabSpriteOrigin => new Lazy<Vector2>(() => new Vector2(4f, 4f));
 
@@ -118,7 +118,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// <param name="b"></param>
         private void DrawClickableTabs(SpriteBatch b)
         {
-            for (int i = 0; i < Tabs.Count; ++i)
+            for (var i = 0; i < Tabs.Count; ++i)
             {
                 b.Begin(SpriteSortMode.FrontToBack, 
                         BlendState.NonPremultiplied, 
@@ -126,8 +126,8 @@ namespace Dannnno.StardewMods.Predictor.UI
                         null,
                         null);
 
-                ClickableComponent currentComponent = GetTabComponent(i);
-                int iconId = GetTabIconId(i);
+                var currentComponent = GetTabComponent(i);
+                var iconId = GetTabIconId(i);
 
                 // Draw the tab background
                 b.Draw(Game1.mouseCursors,

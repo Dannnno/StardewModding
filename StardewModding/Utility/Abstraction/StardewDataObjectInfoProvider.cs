@@ -1,7 +1,7 @@
 ﻿using StardewModdingAPI;
 using System.Collections.Generic;
 
-namespace Dannnno.StardewMods.Predictor.Shared
+namespace Dannnno.StardewMods.Abstraction
 {
     /// <summary>
     /// Standard data provider that pulls form the Data/ObjectInformation file

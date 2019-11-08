@@ -1,5 +1,6 @@
-﻿using Dannnno.StardewMods.Predictor.Geodes;
-using Dannnno.StardewMods.Predictor.Shared;
+﻿using Dannnno.StardewMods.Abstraction;
+using Dannnno.StardewMods.Predictor.Geodes;
+using Dannnno.StardewMods.UI;
 
 namespace Dannnno.StardewMods.Predictor.UI
 {

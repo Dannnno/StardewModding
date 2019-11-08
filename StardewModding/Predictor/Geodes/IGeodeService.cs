@@ -1,4 +1,4 @@
-﻿using Dannnno.StardewMods.Predictor.Shared;
+﻿using Dannnno.StardewMods.Abstraction;
 using System.Collections.Generic;
 
 namespace Dannnno.StardewMods.Predictor.Geodes
