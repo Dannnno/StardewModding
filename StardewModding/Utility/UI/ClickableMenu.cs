@@ -17,6 +17,8 @@ namespace Dannnno.StardewMods.UI
         /// <summary>
         /// Get the game associated with the menu
         /// </summary>
+        public IStardewGraphics Graphics { get; protected set; }
+
         public IStardewGame Game { get; protected set; }
 
         /// <summary>
@@ -38,14 +40,15 @@ namespace Dannnno.StardewMods.UI
         /// <summary>
         /// Initialize the menu
         /// </summary>
-        /// <param name="game">The game the menu is for</param>
-        public ClickableMenu(IStardewGame game) : base(CalculateMenuXPosition(game),
-                                                            CalculateMenuYPosition(game),
+        /// <param name="graphics">The game the menu is for</param>
+        public ClickableMenu(IStardewGame game, IStardewGraphics graphics) : base(CalculateMenuXPosition(graphics),
+                                                            CalculateMenuYPosition(graphics),
                                                             CalculateMenuWidth(),
                                                             CalculateMenuHeight(),
                                                             ShowCloseButton())
         {
             Game = game;
+            Graphics = graphics;
             HoverText = "";
         }
         
@@ -179,21 +182,21 @@ namespace Dannnno.StardewMods.UI
         /// <summary>
         /// Calculate the upper left hand corner x position of the menu
         /// </summary>
-        /// <param name="game">The game whose menu position we're calculating</param>
+        /// <param name="graphics">The game whose menu position we're calculating</param>
         /// <returns>The x position</returns>
-        protected static int CalculateMenuXPosition(IStardewGame game)
+        protected static int CalculateMenuXPosition(IStardewGraphics graphics)
         {
-            return game.WindowWidth / 2 - CalculateMenuWidth() / 2;
+            return graphics.WindowWidth / 2 - CalculateMenuWidth() / 2;
         }
 
         /// <summary>
         /// Calculate the upper left hand corner y position of the menu
         /// </summary>
-        /// <param name="game">The game whose menu position we're calculating</param>
+        /// <param name="graphics">The game whose menu position we're calculating</param>
         /// <returns>The y position</returns>
-        protected static int CalculateMenuYPosition(IStardewGame game)
+        protected static int CalculateMenuYPosition(IStardewGraphics graphics)
         {
-            return game.WindowHeight / 2 - CalculateMenuHeight() / 2;
+            return graphics.WindowHeight / 2 - CalculateMenuHeight() / 2;
         }
     }
 }

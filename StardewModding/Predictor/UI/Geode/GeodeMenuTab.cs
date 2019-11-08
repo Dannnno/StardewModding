@@ -76,7 +76,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// <param name="game">Game the menu is for</param>
         /// <param name="geodePredictor">How to predict geodes</param>
         /// <param name="distance">How far we want to search</param>
-        public GeodeMenuTab(IStardewGame game, GeodePredictor geodePredictor, uint distance = DefaultSearchDistance) : base("Geodes", game)
+        public GeodeMenuTab(IStardewGame game, IStardewGraphics graphics, GeodePredictor geodePredictor, uint distance = DefaultSearchDistance) : base("Geodes", game, graphics)
         {
             Predictor = geodePredictor;
             Distance = distance;
@@ -138,7 +138,7 @@ namespace Dannnno.StardewMods.Predictor.UI
                                  Color.White);
             }
 
-            drawTextureBox(spriteBatch, Game1.mouseCursors, new Rectangle(403, 383, 6, 6), ScrollBarRunner.X, ScrollBarRunner.Y, ScrollBarRunner.Width, ScrollBarRunner.Height, Color.White, Game1.pixelZoom, false);
+            drawTextureBox(spriteBatch, Graphics.MouseCursor, new Rectangle(403, 383, 6, 6), ScrollBarRunner.X, ScrollBarRunner.Y, ScrollBarRunner.Width, ScrollBarRunner.Height, Color.White, Game1.pixelZoom, false);
         }
 
     }

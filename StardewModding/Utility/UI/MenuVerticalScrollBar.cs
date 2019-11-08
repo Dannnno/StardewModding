@@ -5,21 +5,21 @@ using StardewValley;
 using StardewValley.Menus;
 using System;
 
-namespace Dannnno.StardewMods.UI.Shared
+namespace Dannnno.StardewMods.UI
 {
     public class MenuVerticalScrollBar : IClickableMenu
     {
         #region Lazy Fields
-        private Lazy<ClickableTextureComponent> LazyUpArrow => new Lazy<ClickableTextureComponent>(() => new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Game.TileSize / 4,
-                                                                                                                                                     yPositionOnScreen + Game.TileSize,
+        private Lazy<ClickableTextureComponent> LazyUpArrow => new Lazy<ClickableTextureComponent>(() => new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Graphics.TileSize / 4,
+                                                                                                                                                     yPositionOnScreen + Graphics.TileSize,
                                                                                                                                                      11 * Game1.pixelZoom,
                                                                                                                                                      12 * Game1.pixelZoom),
                                                                                                                                        Game1.mouseCursors,
                                                                                                                                        new Rectangle(421, 459, 11, 12),
                                                                                                                                        Game1.pixelZoom,
                                                                                                                                        false));
-        private Lazy<ClickableTextureComponent> LazyDownArrow => new Lazy<ClickableTextureComponent>(() => new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Game.TileSize / 4,
-                                                                                                                                                       yPositionOnScreen + height - Game.TileSize,
+        private Lazy<ClickableTextureComponent> LazyDownArrow => new Lazy<ClickableTextureComponent>(() => new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Graphics.TileSize / 4,
+                                                                                                                                                       yPositionOnScreen + height - Graphics.TileSize,
                                                                                                                                                        11 * Game1.pixelZoom,
                                                                                                                                                        12 * Game1.pixelZoom),
                                                                                                                                          Game1.mouseCursors,
@@ -37,7 +37,7 @@ namespace Dannnno.StardewMods.UI.Shared
         private Lazy<Rectangle> LazyScrollBarRunner => new Lazy<Rectangle>(() => new Rectangle(ScrollBar.bounds.X,
                                                                                                UpArrow.bounds.Y + UpArrow.bounds.Height + Game1.pixelZoom,
                                                                                                ScrollBar.bounds.Width,
-                                                                                               height - Game.TileSize * 2 - UpArrow.bounds.Height - Game1.pixelZoom * 2));
+                                                                                               height - Graphics.TileSize * 2 - UpArrow.bounds.Height - Game1.pixelZoom * 2));
         #endregion
 
         #region Properties
@@ -45,12 +45,12 @@ namespace Dannnno.StardewMods.UI.Shared
         protected ClickableTextureComponent DownArrow => LazyDownArrow.Value;
         protected ClickableTextureComponent ScrollBar => LazyScrollBar.Value;
         protected Rectangle ScrollBarRunner => LazyScrollBarRunner.Value;
-        public IStardewGame Game { get; set; }
+        public IStardewGraphics Graphics { get; set; }
         #endregion
 
-        public MenuVerticalScrollBar(IStardewGame game)
+        public MenuVerticalScrollBar(IStardewGraphics graphics)
         {
-            Game = game;
+            Graphics = graphics;
         }
 
 

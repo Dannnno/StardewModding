@@ -1,4 +1,4 @@
-﻿using Dannnno.StardewMods.UI.Shared;
+﻿using Dannnno.StardewMods.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -31,8 +31,8 @@ namespace Dannnno.StardewMods.Predictor.UI
         private static Lazy<Rectangle> LazyTabCursorRectangle => new Lazy<Rectangle>(() => new Rectangle(16, 368, 16, 16));
         private static Lazy<Vector2> LazyTabSpriteOrigin => new Lazy<Vector2>(() => new Vector2(4f, 4f));
 
-        private static int TabXSpriteOffset => (int)(Game1.tileSize / 3.25) + 3;
-        private static int TabYSpriteOffset => (int)(Game1.tileSize / 2.25);
+        private int TabXSpriteOffset => (int)(Graphics.TileSize / 3.25) + 3;
+        private int TabYSpriteOffset => (int)(Graphics.TileSize / 2.25);
 
         private static Rectangle TabCursorRectangle => LazyTabCursorRectangle.Value;
         private static Vector2 TabSpriteOrigin => LazyTabSpriteOrigin.Value;
@@ -55,14 +55,17 @@ namespace Dannnno.StardewMods.Predictor.UI
         private readonly HoverTextBox HoverTextBox = new HoverTextBox();
 
         public int CurrentTabId { get; private set; }
+
+        public IStardewGraphics Graphics { get; }
         #endregion
 
-        public PredictorMenuV2() : base(CalculateMenuXPosition(),
-                                        CalculateMenuYPosition(),
-                                        CalculateMenuWidth(),
-                                        CalculateMenuHeight(),
-                                        ShowCloseButton)
+        public PredictorMenuV2(IStardewGraphics graphics) : base(CalculateMenuXPosition(),
+                                                                 CalculateMenuYPosition(),
+                                                                 CalculateMenuWidth(),
+                                                                 CalculateMenuHeight(),
+                                                                 ShowCloseButton)
         {
+            Graphics = graphics;
             Tabs = new List<object>
             {
                 1,
@@ -94,8 +97,8 @@ namespace Dannnno.StardewMods.Predictor.UI
             if (!Game1.options.showMenuBackground)
             {
                 b.Draw(
-                    Game1.fadeToBlackRect,
-                    Game1.graphics.GraphicsDevice.Viewport.Bounds,
+                    Graphics.FadeToBlackRectangle,
+                    Graphics.Bounds,
                     Color.Black * 0.4f
                 );
             }
@@ -120,9 +123,9 @@ namespace Dannnno.StardewMods.Predictor.UI
         {
             for (var i = 0; i < Tabs.Count; ++i)
             {
-                b.Begin(SpriteSortMode.FrontToBack, 
-                        BlendState.NonPremultiplied, 
-                        SamplerState.PointClamp, 
+                b.Begin(SpriteSortMode.FrontToBack,
+                        BlendState.NonPremultiplied,
+                        SamplerState.PointClamp,
                         null,
                         null);
 
@@ -130,7 +133,7 @@ namespace Dannnno.StardewMods.Predictor.UI
                 var iconId = GetTabIconId(i);
 
                 // Draw the tab background
-                b.Draw(Game1.mouseCursors,
+                b.Draw(Graphics.MouseCursor,
                        GetBackgroundBoundsFromComponent(i, currentComponent),
                        TabCursorRectangle,
                        Color.White,
@@ -227,9 +230,9 @@ namespace Dannnno.StardewMods.Predictor.UI
             }
 
             // Redraw the mouse, because it disappears
-            b.Draw(Game1.mouseCursors,
-                   new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY()),
-                   new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.gamepadControls ? 44 : 0, 16, 16)),
+            b.Draw(Graphics.MouseCursor,
+                   Graphics.PreviousMousePosition,
+                   new Rectangle?(Game1.getSourceRectForStandardTileSheet(Graphics.MouseCursor, Game1.options.gamepadControls ? 44 : 0, 16, 16)),
                    Color.White,
                    0.0f,
                    Vector2.Zero,

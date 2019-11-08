@@ -54,6 +54,7 @@
     <Compile Include="Abstraction\StardewGameWrapper.cs" />
     <Compile Include="Abstraction\StardewManagedPropertyAttribute.cs" />
     <Compile Include="UI\ClickableMenu.cs" />
+    <Compile Include="UI\Game1Graphics.cs" />
     <Compile Include="UI\HoverTextBox.cs" />
     <Compile Include="UI\IStardewGraphics.cs" />
     <Compile Include="UI\MenuTab.cs" />

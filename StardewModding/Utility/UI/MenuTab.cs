@@ -16,16 +16,16 @@ namespace Dannnno.StardewMods.UI
         #endregion
 
         #region Lazy Fields
-        private Lazy<ClickableTextureComponent> LazyUpArrow => new Lazy<ClickableTextureComponent>(() => new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Game.TileSize / 4,
-                                                                                                                                                     yPositionOnScreen + Game.TileSize,
+        private Lazy<ClickableTextureComponent> LazyUpArrow => new Lazy<ClickableTextureComponent>(() => new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Graphics.TileSize / 4,
+                                                                                                                                                     yPositionOnScreen + Graphics.TileSize,
                                                                                                                                                      11 * Game1.pixelZoom,
                                                                                                                                                      12 * Game1.pixelZoom),
                                                                                                                                        Game1.mouseCursors,
                                                                                                                                        new Rectangle(421, 459, 11, 12),
                                                                                                                                        Game1.pixelZoom,
                                                                                                                                        false));
-        private Lazy<ClickableTextureComponent> LazyDownArrow => new Lazy<ClickableTextureComponent>(() => new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Game.TileSize / 4,
-                                                                                                                                                       yPositionOnScreen + height - Game.TileSize,
+        private Lazy<ClickableTextureComponent> LazyDownArrow => new Lazy<ClickableTextureComponent>(() => new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Graphics.TileSize / 4,
+                                                                                                                                                       yPositionOnScreen + height - Graphics.TileSize,
                                                                                                                                                        11 * Game1.pixelZoom,
                                                                                                                                                        12 * Game1.pixelZoom),
                                                                                                                                          Game1.mouseCursors,
@@ -43,9 +43,9 @@ namespace Dannnno.StardewMods.UI
         private Lazy<Rectangle> LazyScrollBarRunner => new Lazy<Rectangle>(() => new Rectangle(ScrollBar.bounds.X,
                                                                                                UpArrow.bounds.Y + UpArrow.bounds.Height + Game1.pixelZoom,
                                                                                                ScrollBar.bounds.Width,
-                                                                                               height - Game.TileSize * 2 - UpArrow.bounds.Height - Game1.pixelZoom * 2));
-        private Lazy<Point> LazyHeaderBounds => new Lazy<Point>(() => new Point(xPositionOnScreen + Game.TileSize / 4,
-                                                                                yPositionOnScreen + Game.TileSize * 5 / 4 + Game1.pixelZoom));
+                                                                                               height - Graphics.TileSize * 2 - UpArrow.bounds.Height - Game1.pixelZoom * 2));
+        private Lazy<Point> LazyHeaderBounds => new Lazy<Point>(() => new Point(xPositionOnScreen + Graphics.TileSize / 4,
+                                                                                yPositionOnScreen + Graphics.TileSize * 5 / 4 + Game1.pixelZoom));
         #endregion
 
         #region Properties
@@ -65,8 +65,8 @@ namespace Dannnno.StardewMods.UI
         /// <summary>
         /// Create a new tabbed menu item
         /// </summary>
-        /// <param name="game"></param>
-        public MenuTab(string tabName, IStardewGame game) : base(game)
+        /// <param name="graphics"></param>
+        public MenuTab(string tabName, IStardewGame game, IStardewGraphics graphics) : base(game, graphics)
         {
             TabName = tabName;
             CurrentItemIndex = 0;
@@ -90,11 +90,11 @@ namespace Dannnno.StardewMods.UI
         /// </summary>
         protected virtual void Initialize()
         {
-            var xCoord = xPositionOnScreen + Game.TileSize / 4;
+            var xCoord = xPositionOnScreen + Graphics.TileSize / 4;
             for (int i = 0; i < NumViewablePerPage; ++i)
             {
-                var yCoord = yPositionOnScreen + (Game.TileSize + ItemBufferSpace) * (i + 2);
-                var bounds = new Rectangle(xCoord, yCoord, width - Game.TileSize / 2, (height - Game.TileSize * 2) / (NumViewablePerPage + 1) + Game1.pixelZoom);
+                var yCoord = yPositionOnScreen + (Graphics.TileSize + ItemBufferSpace) * (i + 2);
+                var bounds = new Rectangle(xCoord, yCoord, width - Graphics.TileSize / 2, (height - Graphics.TileSize * 2) / (NumViewablePerPage + 1) + Game1.pixelZoom);
                 var component = new ClickableComponent(bounds, i.ToString())
                 {
                     myID = i,

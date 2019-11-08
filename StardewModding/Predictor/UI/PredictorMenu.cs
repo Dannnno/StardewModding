@@ -30,7 +30,7 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// Create the predictor menu
         /// </summary>
         /// <param name="game">The game we're creating the menu for</param>
-        public PredictorMenu(IStardewGame game, GeodePredictor geodePredictor) : base(game, StartingMenuId)
+        public PredictorMenu(IStardewGame game, IStardewGraphics graphics, GeodePredictor geodePredictor) : base(game, graphics, StartingMenuId)
         {
             InitializeSubMenus(geodePredictor);
             CurrentTab = (int)PredictorTabNameEnum.Geode;
@@ -61,7 +61,7 @@ namespace Dannnno.StardewMods.Predictor.UI
             Tabs.Add(new MenuTuple()
             {
                 Component = GetTabComponent(PredictorTabNameEnum.Geode),
-                Menu = new GeodeMenuTab(Game, geodePredictor),
+                Menu = new GeodeMenuTab(Game, Graphics, geodePredictor),
                 IconId = GetIconId(PredictorTabNameEnum.Geode)
             });
         }

@@ -86,9 +86,9 @@ namespace Dannnno.StardewMods.UI
         /// <summary>
         /// Create a new tabbed menu
         /// </summary>
-        /// <param name="game">The game this is for</param>
+        /// <param name="graphics">The game this is for</param>
         /// <param name="startingTabId">The first tab ID</param>
-        public TabbedMenuMixin(IStardewGame game, int startingTabId) : base(game)
+        public TabbedMenuMixin(IStardewGame game, IStardewGraphics graphics, int startingTabId) : base(game, graphics)
         {
             StartingTabId = startingTabId;
             Tabs = new List<MenuTuple>();
@@ -215,17 +215,17 @@ namespace Dannnno.StardewMods.UI
         {
             if (!Invisible)
             {
-                if (!Game.ShowMenuBackground)
+                if (!Graphics.ShowMenuBackground)
                 {
                     spriteBatch.Draw(
-                        Game.FadeToBlackRectangle,
-                        Game.Bounds,
+                        Graphics.FadeToBlackRectangle,
+                        Graphics.Bounds,
                         DefaultBackgroundColor
                     );
                 }
 
                 var currentTabBoundingBox = new Rectangle(CurrentMenu.xPositionOnScreen, CurrentMenu.yPositionOnScreen, CurrentMenu.width, CurrentMenu.height);
-                Game.DrawDialogueBox(currentTabBoundingBox);
+                Graphics.DrawDialogueBox(currentTabBoundingBox);
                 CurrentMenu.draw(spriteBatch);
                 spriteBatch.End();
 
@@ -237,8 +237,8 @@ namespace Dannnno.StardewMods.UI
 
                         var component = Tabs[i].Component;
                         var currentTabVerticalOffset = (CurrentTab == i ? 8 : 0);
-                        var spriteX = component.bounds.X + (int)(Game.TileSize / 3.25) + 3;
-                        var spriteY = component.bounds.Y + (int)(Game.TileSize / 2.25) + currentTabVerticalOffset;
+                        var spriteX = component.bounds.X + (int)(Graphics.TileSize / 3.25) + 3;
+                        var spriteY = component.bounds.Y + (int)(Graphics.TileSize / 2.25) + currentTabVerticalOffset;
                         spriteBatch.Draw(Game1.mouseCursors, 
                                          new Vector2(component.bounds.X, component.bounds.Y + currentTabVerticalOffset), 
                                          new Rectangle?(new Rectangle(16, 368, 16, 16)), 
@@ -395,10 +395,10 @@ namespace Dannnno.StardewMods.UI
         /// <returns>Bounding box of the tab</returns>
         private Rectangle MakeTabRectangle(int tabPosistion)
         {
-            return new Rectangle(xPositionOnScreen + Game.TileSize * tabPosistion,
-                                 yPositionOnScreen + tabYPositionRelativeToMenuY + Game.TileSize,
-                                 Game.TileSize,
-                                 Game.TileSize);
+            return new Rectangle(xPositionOnScreen + Graphics.TileSize * tabPosistion,
+                                 yPositionOnScreen + tabYPositionRelativeToMenuY + Graphics.TileSize,
+                                 Graphics.TileSize,
+                                 Graphics.TileSize);
         }
         #endregion
     }
