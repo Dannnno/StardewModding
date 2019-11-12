@@ -1,10 +1,17 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Dannnno.StardewMods.Abstraction;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley.Menus;
 
 namespace Dannnno.StardewMods.UI
 {
     public interface IStardewGraphics
     {
+        /// <summary>
+        /// Get the size of a sprite's tile
+        /// </summary>
+        public int TileSheetSpriteSize { get; }
+
         /// <summary>
         /// Get whether a menu can be opened
         /// </summary>
@@ -55,6 +62,30 @@ namespace Dannnno.StardewMods.UI
         /// </summary>
         public Vector2 PreviousMousePosition { get; }
 
+        /// <summary>
+        /// Get the game's primary sprite sheet
+        /// </summary>
+        public Texture2D SpriteSheet { get; }
+
+        /// <summary>
+        /// Get whether the game is using a hardware cursor
+        /// </summary>
+        public bool UsingHardwareCursor { get; }
+
+        /// <summary>
+        /// Get the cursor icon
+        /// </summary>
+        public int CursorIcon { get; }
+
+        /// <summary>
+        /// Get the pixel zoom
+        /// </summary>
+        public int PixelZoom { get; }
+
+        /// <summary>
+        /// Get the button scale
+        /// </summary>
+        public float ButtonScale { get; }
 
         #region Methods
 
@@ -84,6 +115,21 @@ namespace Dannnno.StardewMods.UI
         /// <summary>
         public void DrawDialogueBox(Rectangle r, bool speaker = false, bool drawOnlyBox = true, string message = null, bool objectDialogueWithPortrait = false, bool ignoreTitleSafe = false);
 
+        /// <summary>
+        /// Toggles the active menu
+        /// </summary>
+        /// <typeparam name="T">The type of the menu</typeparam>
+        /// <param name="game">The game we're working in</param>
+        /// <param name="menuToToggle">The menu to toggle</param>
+        public void ToggleActiveMenu<T>(IStardewGame game, T menuToToggle) where T : IClickableMenu;
+
+        /// <summary>
+        /// Get the source rectangle for a given sprite
+        /// </summary>
+        /// <param name="iconId">The id of the sprite</param>
+        /// <param name="texture">The tile sheet to pull from</param>
+        /// <returns>The source rectangle</returns>
+        public Rectangle GetSpriteSourceRectangleForIconFromTileSheet(int iconId, Texture2D texture);
         #endregion
     }
 }

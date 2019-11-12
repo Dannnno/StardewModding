@@ -17,25 +17,33 @@ namespace Dannnno.StardewMods.Predictor.UI
         private static readonly int MenuHeight = 600;
         private const int SelectedTabVerticalOffset = 8;
         private const float NoRotation = 0.0f;
-        private const float CursorScale = 4f;
-        private const float CursorDepth = 0.0001f;
-        private const int TileSheetSpriteSize = 16;
+        private const float TabBackgroundScale = 4f;
+        private const float TabDepth = 0.0001f;
         private const float TabSpriteScale = 2.5f;
         private const float TabSpriteDepth = 0.9f;
         private const int BaseComponentId = 26438;
         private const int RottingPlantId = 747;
+        private const int GeodeId = 535;
+        private const float CursorDepth = 1f;
         #endregion
 
         #region Readonly Properties
         // We don't need to recalculate these every time
         private static Lazy<Rectangle> LazyTabCursorRectangle => new Lazy<Rectangle>(() => new Rectangle(16, 368, 16, 16));
         private static Lazy<Vector2> LazyTabSpriteOrigin => new Lazy<Vector2>(() => new Vector2(4f, 4f));
+        private Lazy<Rectangle> LazyMenuBounds => new Lazy<Rectangle>(() => new Rectangle(xPositionOnScreen, yPositionOnScreen, width, height));
 
         private int TabXSpriteOffset => (int)(Graphics.TileSize / 3.25) + 3;
         private int TabYSpriteOffset => (int)(Graphics.TileSize / 2.25);
 
-        private static Rectangle TabCursorRectangle => LazyTabCursorRectangle.Value;
+        private static Rectangle TabBackgroundRectangle => LazyTabCursorRectangle.Value;
         private static Vector2 TabSpriteOrigin => LazyTabSpriteOrigin.Value;
+
+        private Rectangle MenuBounds => LazyMenuBounds.Value;
+
+        private float CursorScale => Graphics.PixelZoom + Graphics.ButtonScale / 150f;
+
+        private Rectangle CursorSource => Graphics.GetSpriteSourceRectangleForIconFromTileSheet(Graphics.CursorIcon, Graphics.MouseCursor);
         #endregion
 
         #region Properties
@@ -94,7 +102,7 @@ namespace Dannnno.StardewMods.Predictor.UI
             // Whatever the current batch is works
 
             // Draw the modal backdrop to make the menu pop
-            if (!Game1.options.showMenuBackground)
+            if (!Graphics.ShowMenuBackground)
             {
                 b.Draw(
                     Graphics.FadeToBlackRectangle,
@@ -104,14 +112,7 @@ namespace Dannnno.StardewMods.Predictor.UI
             }
 
             // Now draw out the menu itself 
-            Game1.drawDialogueBox(
-                xPositionOnScreen,
-                yPositionOnScreen,
-                width,
-                height,
-                speaker: false,
-                drawOnlyBox: true);
-
+            Graphics.DrawDialogueBox(MenuBounds);
             b.End();
         }
 
@@ -135,18 +136,18 @@ namespace Dannnno.StardewMods.Predictor.UI
                 // Draw the tab background
                 b.Draw(Graphics.MouseCursor,
                        GetBackgroundBoundsFromComponent(i, currentComponent),
-                       TabCursorRectangle,
+                       TabBackgroundRectangle,
                        Color.White,
                        NoRotation,
                        Vector2.Zero,
-                       CursorScale,
+                       TabBackgroundScale,
                        SpriteEffects.None,
-                       CursorDepth);
+                       TabDepth);
 
                 // Draw the sprite we want on the tab
-                b.Draw(Game1.objectSpriteSheet,
+                b.Draw(Graphics.SpriteSheet,
                        GetSpriteBoundsFromComponent(i, currentComponent),
-                       Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, iconId, TileSheetSpriteSize, TileSheetSpriteSize),
+                       Graphics.GetSpriteSourceRectangleForIconFromTileSheet(iconId, Graphics.SpriteSheet),
                        Color.White,
                        NoRotation,
                        TabSpriteOrigin,
@@ -165,8 +166,12 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// <returns>The Icon Id</returns>
         private int GetTabIconId(int i)
         {
-            // Dumb thing that doesn't give me intellisense warnings and always returns the same thing
-            return i == i + 1 ? RottingPlantId : RottingPlantId;
+            return i switch
+            {
+                // TODO: Be smarter about this, don't use constants
+                0 => GeodeId,
+                _ => RottingPlantId
+            };
         }
 
         /// <summary>
@@ -224,7 +229,7 @@ namespace Dannnno.StardewMods.Predictor.UI
             HoverTextBox.draw(b);
 
             // If we are using a hardware cursor, then we don't need to redraw it
-            if (Game1.options.hardwareCursor)
+            if (Graphics.UsingHardwareCursor)
             {
                 return;
             }
@@ -232,13 +237,13 @@ namespace Dannnno.StardewMods.Predictor.UI
             // Redraw the mouse, because it disappears
             b.Draw(Graphics.MouseCursor,
                    Graphics.PreviousMousePosition,
-                   new Rectangle?(Game1.getSourceRectForStandardTileSheet(Graphics.MouseCursor, Game1.options.gamepadControls ? 44 : 0, 16, 16)),
+                   CursorSource,
                    Color.White,
-                   0.0f,
+                   NoRotation,
                    Vector2.Zero,
-                   Game1.pixelZoom + Game1.dialogueButtonScale / 150f,
+                   CursorScale,
                    SpriteEffects.None,
-                   1f);
+                   CursorDepth);
         }
 
         /// <summary>
@@ -281,10 +286,10 @@ namespace Dannnno.StardewMods.Predictor.UI
         /// <returns>Bounding box of the tab</returns>
         private Rectangle MakeTabRectangle(int tabPosistion)
         {
-            return new Rectangle(xPositionOnScreen + Game1.tileSize * tabPosistion,
-                                 yPositionOnScreen + tabYPositionRelativeToMenuY + Game1.tileSize,
-                                 Game1.tileSize,
-                                 Game1.tileSize);
+            return new Rectangle(xPositionOnScreen + Graphics.TileSize * tabPosistion,
+                                 yPositionOnScreen + tabYPositionRelativeToMenuY + Graphics.TileSize,
+                                 Graphics.TileSize,
+                                 Graphics.TileSize);
         }
 
         /// <summary>

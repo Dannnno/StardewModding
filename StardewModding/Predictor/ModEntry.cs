@@ -1,10 +1,12 @@
-﻿using Dannnno.StardewMods.Abstraction;
+﻿using System;
+using Dannnno.StardewMods.Abstraction;
 using Dannnno.StardewMods.Predictor.Geodes;
 using Dannnno.StardewMods.Predictor.UI;
 using Dannnno.StardewMods.UI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Menus;
 
 namespace Dannnno.StardewMods.Predictor
 {
@@ -13,6 +15,12 @@ namespace Dannnno.StardewMods.Predictor
     /// </summary>
     public class ModEntry : Mod
     {
+        // P for Predictor
+        // TODO: Make this configurable
+        private const SButton PredictorMenuButton = SButton.P;
+
+        public bool MenuIsOpen { get; private set; }
+
         /// <summary>
         /// Get or set the geode predictor
         /// </summary>
@@ -23,7 +31,15 @@ namespace Dannnno.StardewMods.Predictor
         /// </summary>
         private IStardewGame GameWrapper { get; set; }
 
+        /// <summary>
+        /// Get or set the graphics wrapper
+        /// </summary>
         private IStardewGraphics GraphicsWrapper { get; set; }
+
+        /// <summary>
+        /// Get or set the menu to trigger
+        /// </summary>
+        private PredictorMenuV2 Menu { get; set; }
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -31,6 +47,8 @@ namespace Dannnno.StardewMods.Predictor
         {
             // Initialize our tools
             GameWrapper = new StardewGameWrapper();
+            GraphicsWrapper = new Game1Graphics();
+            Menu = new PredictorMenuV2(GraphicsWrapper);
             GeodePredictor = new GeodePredictor(
                 new StardewGeodeService<IStardewObjectProvider>(),
                 new StardewDataObjectInfoProvider(helper),
@@ -49,26 +67,14 @@ namespace Dannnno.StardewMods.Predictor
         {
             // ignore if player hasn't loaded a save yet
             if (!GraphicsWrapper.GameIsReady)
-                return;
-
-            // P for Predictor
-            // TODO: Make this configurable
-            if (e.Button == SButton.P)
             {
-                if (GraphicsWrapper.CanOpenMenu)
-                {
-                    OpenMenu();
-                }
+                return;
             }
-        }
 
-        /// <summary>
-        /// Open the prediction menu
-        /// </summary>
-        private void OpenMenu()
-        {
-            Game1.activeClickableMenu = new PredictorMenuV2(GraphicsWrapper);
-                //new PredictorMenu(Wrapper, GeodePredictor);
+            if (e.Button == PredictorMenuButton)
+            {
+                GraphicsWrapper.ToggleActiveMenu(GameWrapper, Menu);
+            }
         }
     }
 }
