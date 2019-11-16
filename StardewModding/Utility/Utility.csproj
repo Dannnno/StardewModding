@@ -61,6 +61,7 @@
     <Compile Include="UI\MenuTabItem.cs" />
     <Compile Include="UI\MenuVerticalScrollBar.cs" />
     <Compile Include="UI\TabbedClickableMenu.cs" />
+    <Compile Include="UI\TabbedMenu.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
