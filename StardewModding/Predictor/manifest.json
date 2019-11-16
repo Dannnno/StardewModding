@@ -1,0 +1,10 @@
+{
+  "Name": "Predictor",
+  "Author": "Dan Obermiller",
+  "Version": "1.0.0",
+  "Description": "In-game predictor mod based on Stardew Predictor by MouseyPounds",
+  "UniqueID": "Dannnno.Predictor",
+  "EntryDll": "Predictor.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}
